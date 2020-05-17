@@ -1,0 +1,40 @@
+{% extends "outer_base.html" %}
+
+{% block content %}
+    <form class="form-signin" action="" method="post">
+            <div class="text-center mb-4">
+        <img class="mb-4" src="{{ url_for('static', filename='img/lock.png') }}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+      </div>
+        {{ form.hidden_tag() }}
+        <div class="form-label-group">
+            {{ form.username(id="inputUsername", class="form-control", placeholder="Username") }}
+            <label for="inputUsername">Username</label>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class="form-label-group">
+            {{ form.email(id="inputEmail", class="form-control", placeholder="Email") }}
+            <label for="inputEmail">Email</label>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class="form-label-group">
+            {{ form.password(id="inputPassword", class="form-control", placeholder="Password") }}
+            <label for="inputPassword">Password</label>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <div class="form-label-group">
+            {{ form.password2(id="inputPassword2", class="form-control", placeholder="Retype Password") }}
+            <label for="inputPassword2">Retype Password</label>
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        {{ form.submit(class="btn btn-lg btn-primary btn-block", type="submit") }}
+    </form>
+{% endblock %}

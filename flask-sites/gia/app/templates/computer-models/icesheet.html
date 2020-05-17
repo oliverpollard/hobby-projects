@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block customcss %}
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Ice-Sheet model</h1>
+      <p>Computer models are programs written to simulate real world systems based on our understanding of the physical laws that govern them. These laws are expressed as mathematical equations which, given the required inputs, can be solved to produce an approximation of some other state of the system in the form of output variable values.</p>
+      <p>
+      <p>Here you can learn more about the computational modelling that goes into our understanding of past, present and future sea level rise. This section also discusses the input requirements for  each model. Click below to learn how these models work together to help us predict sea level.</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
+    </div>
+  </div>
+  <div class="container">
+
+  <h1>1. Topography Input Preperation</h1>
+	<img src="{{ url_for('static', filename='img/ICESHEET-1.png') }}"  preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+  <h1>2. Shear Stress Input Preperation</h1>
+
+  <h1>3. Ice-Sheet Margin Input Processing</h1>
+
+  <h1>4. Running ICESHEET</h1>
+
+  <h1>5. Processing Output</h1>
+</div>
+{% endblock %}

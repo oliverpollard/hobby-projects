@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block customcss %}
+	<link href="{{ url_for('static', filename='css/overview.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Computer Models</h1>
+      <p>Computer models are programs written to simulate real world systems based on our understanding of the physical laws that govern them. These laws are expressed as mathematical equations which, given the required inputs, can be solved to produce an approximation of some other state of the system in the form of output variable values.</p>
+      <p>
+      <p>Here you can learn more about the computational modelling that goes into our understanding of past, present and future sea level rise. This section also discusses the input requirements for  each model. Click below to learn how these models work together to help us predict sea level.</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
+    </div>
+  </div>
+<div class="container">
+	<div class="card">
+		<div class="card-header">
+			<h1 class="card-title">Sea Level Model</h1>
+			<p class="card-text">In its simplest form a sea level model needs to calculate the water lost or gained from ice sheets, distribute this change accross the ocean and calculate the associated change in ocean height. However, the redistribution of mass causes other important effects to occur including glaical isostatic adjustment.</p>
+			<p><a class="btn btn-primary" href="{{ url_for('sealevel_model') }}" role="button">Learn More</a></p>
+		</div>
+		<div class="container inputs">
+			<div class="row">
+			  <div class="col-lg">
+			    <img src="{{ url_for('static', filename='img/icemassdist.png') }}" class="rounded-circle" width="200" height="200" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+			    <h2>Ice Distribution</h2>
+			    <p>Ice-sheets that existed thousands of years ago covered a far greater area and were much thicker than those found today. When calculating changes in sea level it is important to understand how the shape and thickness of past ice-sheets changed with time.</p>
+			    <p><a class="btn btn-secondary" href="{{ url_for('ice') }}" role="button">Learn More</a></p>
+			  </div><!-- /.col-lg-4 -->
+			  <div class="col-lg">
+			    <img src="{{ url_for('static', filename='img/geometry.png') }}" class="rounded-circle" width="200" height="200" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+			    <h2>Earth Geometry</h2>
+			    <p>Changes in the geometry of the Earth's surface can cause some ocean basins to become deeper and others to become shallower in addition to changing the shape of the ocean itself. Understanding why and how this geometry changes through time is a key component of sea level modelling.</p>
+			    <p><a class="btn btn-secondary" href="{{ url_for('geometry') }}" role="button">Learn More</a></p>
+			  </div><!-- /.col-lg-4 -->
+			  <div class="col-lg">
+			    <img src="{{ url_for('static', filename='img/rheology.png') }}" class="rounded-circle" width="200" height="200" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+			    <h2>Earth Rheology</h2>
+			    <p>While it may seem solid to us, whether the Earth is in fact a solid object or a viscous liquid is all down to the time scale that it is viewed from. Understanding the rheology of the Earth helps us to predict how it will deform over tens of thousands of years.</p>
+			    <p><a class="btn btn-secondary" href="{{ url_for('rheology') }}" role="button">Learn More</a></p>
+			  </div><!-- /.col-lg-4 -->
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="card">
+		<div class="card-header">
+			<h1 class="card-title">Ice-Sheet Model</h1>
+			<p class="card-text">An ice sheet is defined by it's extent and thickness with both of variables being subject to sigificant change with time. There are many approaches to ice-sheet modelling with the most complex usually requring the greatest amount of input information. However, when information is scarse it is still possible to reconstruct ice-sheets based on a number of simplifying assumptions.</p>
+			<p><a class="btn btn-primary" href="{{ url_for('icesheet_model') }}" role="button">Learn More</a></p>
+		</div>
+		<div class="container inputs">
+			<div class="row">
+			  <div class="col-lg">
+			    <img src="{{ url_for('static', filename='img/icemassdist.png') }}" class="rounded-circle" width="200" height="200" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+			    <h2>Ice-Sheet Margins</h2>
+			    <p>Ice-sheets that existed thousands of years ago covered a far greater area and were much thicker than those found today. When calculating changes in sea level it is important to understand how the shape and thickness of past ice-sheets changed with time.</p>
+			    <p><a class="btn btn-secondary" href="{{ url_for('ice') }}" role="button">Learn More</a></p>
+			  </div><!-- /.col-lg-4 -->
+			  <div class="col-lg">
+			    <img src="{{ url_for('static', filename='img/geometry.png') }}" class="rounded-circle" width="200" height="200" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+			    <h2>Topography</h2>
+			    <p>Changes in the geometry of the Earth's surface can cause some ocean basins to become deeper and others to become shallower in addition to changing the shape of the ocean itself. Understanding why and how this geometry changes through time is a key component of sea level modelling.</p>
+			    <p><a class="btn btn-secondary" href="{{ url_for('geometry') }}" role="button">Learn More</a></p>
+			  </div><!-- /.col-lg-4 -->
+			  <div class="col-lg">
+			    <img src="{{ url_for('static', filename='img/rheology.png') }}" class="rounded-circle" width="200" height="200" preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+			    <h2>Shear Stress Map</h2>
+			    <p>While it may seem solid to us, whether the Earth is in fact a solid object or a viscous liquid is all down to the time scale that it is viewed from. Understanding the rheology of the Earth helps us to predict how it will deform over tens of thousands of years.</p>
+			    <p><a class="btn btn-secondary" href="{{ url_for('rheology') }}" role="button">Learn More</a></p>
+			  </div><!-- /.col-lg-4 -->
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'outer_base.html' %}
+
+{% block content %}
+<form class="form-signin" action="" method="post">
+    <div class="text-center mb-4">
+        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+    </div>
+
+    {{ form.hidden_tag() }}
+
+    <div class="form-label-group">
+        {{ form.short(id="inputShort", class="form-control", placeholder="Short") }}
+        <label for="inputShort">Short</label>
+    </div>
+    <div class="form-label-group">
+        {{ form._authors(id="input_Authors", class="form-control", placeholder="Authors") }}
+        <label for="input_Authors">Authors</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.published(id="inputPublished", class="form-control", placeholder="Published") }}
+        <label for="inputPublished">Published</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.journal(id="inputJournal", class="form-control", placeholder="Journal") }}
+        <label for="inputJournal">Journal</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.fullname(id="inputFullname", class="form-control", placeholder="Fullname") }}
+        <label for="inputFullname">Fullname</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.shortname(id="inputShortname", class="form-control", placeholder="Shortname") }}
+        <label for="inputShortname">Shortname</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.description(id="inputDescription", class="form-control", placeholder="Description") }}
+        <label for="inputDescription">Description</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.abstract(id="inputAbstract", class="form-control", placeholder="Abstract") }}
+        <label for="inputAbstract">Abstract</label>
+    </div>
+    <div class="form-label-group">
+        {{ form.doi(id="inputDoi", class="form-control", placeholder="doi") }}
+        <label for="inputDoi">doi</label>
+    </div>
+    <div class="form-label-group">
+        {{ form._tags(id="input_Tags", class="form-control", placeholder="Tags") }}
+        <label for="input_Tags">Tags</label>
+    </div>
+    {{ form.submit(class="btn btn-lg btn-primary btn-block", type="submit") }}
+</form>
+{% endblock %}

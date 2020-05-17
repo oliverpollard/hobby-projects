@@ -1,0 +1,9 @@
+**/.DS_Store
+**/__pycache__
+
+dailyexpressweather/archive
+dailyexpressweather/*.csv
+dailyexpressweather/headline_data
+
+bingo/names.txt
+bingo/cards
