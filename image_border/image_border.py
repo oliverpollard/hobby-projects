@@ -10,7 +10,7 @@ def file_exists(parser, arg):
 
 parser = ArgumentParser(description="produces square images with white borders")
 parser.add_argument("-i", "--input", dest="input", required=True, help="input image", metavar="FILE", type=lambda x: file_exists(parser, x))
-#parser.add_argument("-o", "--output", dest="output", required=True, help="output image", metavar="FILE")
+parser.add_argument("-o", "--output", dest="output", required=True, help="output image", metavar="FILE")
 
 args = parser.parse_args()
 
@@ -41,11 +41,13 @@ new_im = Image.new("RGB", new_size,color=(255,255,255))   ## luckily, this is al
 print((new_length-x_size)/2, (new_length-y_size)/2)
 new_im.paste(image, (int((new_length-x_size)/2), int((new_length-y_size)/2)))
 
+"""
+
 if exif[orientation] == 3:
     new_im=new_im.rotate(180, expand=True)
 elif exif[orientation] == 6:
     new_im=new_im.rotate(270, expand=True)
 elif exif[orientation] == 8:
     new_im=new_im.rotate(90, expand=True)
-
-new_im.save("square_" + args.input)
+"""
+new_im.save(args.output)
