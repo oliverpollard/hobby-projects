@@ -7,3 +7,6 @@ dailyexpressweather/headline_data
 
 bingo/names.txt
 bingo/cards
+
+*.db
+*.sqlite
