@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+<div class="container-fluid">
+    <div class="row justify-content-start my-auto">
+        <div class="col-lg-2">
+            <h1 class="align-middle">Transactions</h1>
+        </div>
+        <div class="col-md-auto">
+            <p>
+                <a class="btn btn-primary" data-toggle="collapse" href="#AddTransaction" role="button"
+                    aria-expanded="false" aria-controls="AddTransaction">
+                    Add Transaction
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="collapse" id="AddTransaction">
+        <div class="card card-body">
+            <form action="" method="post">
+                <div class="form-row">
+                    {{ add_transaction.hidden_tag() }}
+                    <div class="col">
+                        {{ add_transaction.date(type="text", class="form-control", placeholder="YYYY-MM-DD") }}
+                    </div>
+                    <div class="col">
+                        {{ add_transaction.account(type="text", class="form-control", placeholder="Account") }}
+                    </div>
+                    <div class="col">
+                        <label class="sr-only" for="inlineFormInputGroup">Amount</label>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">£</div>
+                            </div>
+                            {{ add_transaction.amount(type="text", class="form-control", id="inlineFormInputGroup", placeholder="Amount") }}
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        {{ add_transaction.payee(type="text", class="form-control", placeholder="Payee") }}
+                    </div>
+                    <div class="col">
+                        {{ add_transaction.catagory(type="text", class="form-control", placeholder="Catagory") }}
+                    </div>
+                    <div class="col">
+                        <div class="col-auto">
+                            {{ add_transaction.submit(type="submit", class="btn btn-primary mb-2") }}
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br>
+    </div>
+</div>
+
+
+<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
+    <h4 id="list-item-1">Item 1</h4>
+    <p>...</p>
+    <h4 id="list-item-2">Item 2</h4>
+    <p>...</p>
+    <h4 id="list-item-3">Item 3</h4>
+    <p>...</p>
+    <h4 id="list-item-4">Item 4</h4>
+    <p>...</p>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-1">
+            <div id="list-example" class="list-group">
+                <a class="list-group-item list-group-item-action" href="#list-item-1">Item 1</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-2">Item 2</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-3">Item 3</a>
+                <a class="list-group-item list-group-item-action" href="#list-item-4">Item 4</a>
+            </div>
+        </div>
+        <div class="col">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Account</th>
+                        <th scope="col">Payee</th>
+                        <th scope="col">Catagory</th>
+                        <th style="width: 1%" scope="col">Amount</th>
+                        <th style="width: 1%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set ns = namespace(month=13) %}
+                    {% set ns = namespace(month_id=0) %}
+                    {% for transaction in transactions %}
+                    {% if ns.month != transaction.date[5:7] %}
+                    <tr>
+                        {% set ns.month = transaction.date[5:7] %}
+                        {% set ns.month_id = ns.month_id + 1 %}
+                        <td colspan="6">{{ format_month(ns.month) }} {{ ns.month_id }}</td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td class="align-middle">
+                            {{ transaction.date[8:] }}/{{ transaction.date[5:7] }}/{{ transaction.date[:4] }}
+                        </td>
+                        <td class="align-middle">{{ transaction.account }}</td>
+                        <td class="align-middle">{{ transaction.payee }}</td>
+                        <td class="align-middle">{{ transaction.catagory }}</td>
+                        <td class="align-middle text-right">£{{ "{:.2f}".format(transaction.amount) }}</td>
+                        <td class="align-middle text-center">
+                            <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                data-target="#EditTransaction{{ transaction.id }}" aria-expanded="false"
+                                aria-controls="collapseExample">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <div class="collapse" id="EditTransaction{{ transaction.id }}">
+                            <div class="card card-body">
+                                <form action="" method="post">
+                                    <div class="form-row">
+                                        {{ edit_transaction.hidden_tag() }}
+                                        {{ edit_transaction.record_id(value=transaction.id) }}
+                                        <div class="col-auto">
+                                            {{ edit_transaction.date(type="text", class="form-control", placeholder="YYYY-MM-DD", value=transaction.date)
+                                    }}
+                                        </div>
+                                        <div class="col">
+                                            {{ edit_transaction.account(type="text", class="form-control", placeholder="Account", value=transaction.account)
+                                    }}
+                                        </div>
+                                        <div class="col">
+                                            <label class="sr-only" for="inlineFormInputGroup">Amount</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">£</div>
+                                                </div>
+                                                {{ edit_transaction.amount(type="text", class="form-control", id="inlineFormInputGroup", placeholder="Amount", value="{:.2f}".format(transaction.amount))
+                                        }}
+
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            {{ edit_transaction.payee(type="text", class="form-control", placeholder="Payee", value=transaction.payee)
+                                    }}
+                                        </div>
+                                        <div class="col">
+                                            {{ edit_transaction.catagory(type="text", class="form-control", placeholder="Catagory", value=transaction.catagory)
+                                    }}
+                                        </div>
+                                        <div class="col">
+                                            <div class="col-auto">
+                                                {{ edit_transaction.submit(type="submit", class="btn btn-primary mb-2") }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -3,6 +3,8 @@ Program for keeping track of finances
 """
 
 import sqlite3
+import csv
+from datetime import datetime
 
 
 class Database:
@@ -12,7 +14,9 @@ class Database:
     """
 
     def __init__(self, table_init_statement=""):
-        self.db_connection = sqlite3.connect("finances/data/data.db")
+        self.db_connection = sqlite3.connect(
+            "/Users/Oliver/Code/hobby-python/finances/data/data.db"
+        )
         self.db_cursor = self.db_connection.cursor()
         self.db_cursor.execute(table_init_statement)
         self.db_connection.commit()
@@ -23,6 +27,31 @@ class Database:
         This might be better to do with a context manager?
         """
         self.db_connection.close()
+
+    def export(self):
+        self.db_cursor.execute("""SELECT name FROM sqlite_master WHERE type='table'""")
+        tables = []
+        for _ in self.db_cursor.fetchall():
+            tables.append(_[0])
+        for table in tables:
+            self.db_cursor.execute("PRAGMA table_info(" + table + ");")
+            table_headers_info = self.db_cursor.fetchall()
+            headers = []
+            for _ in table_headers_info:
+                headers.append(_[1])
+            self.db_cursor.execute("SELECT * FROM " + table)
+            table_data = self.db_cursor.fetchall()
+            with open(
+                "finance_data_"
+                + table
+                + datetime.now().strftime("_%Y-%m-%d-%H-%M-%S")
+                + ".csv",
+                mode="w",
+            ) as csv_file:
+                writer = csv.writer(csv_file, delimiter=",")
+                writer.writerow(headers)
+                for line in table_data:
+                    writer.writerow(line)
 
 
 class Accounts(Database):
@@ -121,6 +150,35 @@ class Transactions(Database):
     def __init__(self):
         super().__init__(Transactions.table_init_statement)
 
+    def get_catagories(self):
+        """
+        Returns all unique catagories in the database
+        """
+        self.db_cursor.execute("""SELECT DISTINCT catagory FROM transactions""")
+        raw_catagories = self.db_cursor.fetchall()
+        catagories = []
+        for catagory in raw_catagories:
+            catagories.append(catagory[0])
+
+        return catagories
+
+    def get_catagory_info(self):
+        catagory_names = self.get_catagories()
+        catagory_info = []
+        for catagory_name in catagory_names:
+            self.db_cursor.execute(
+                """SELECT amount FROM transactions WHERE catagory IS :catagory_name;""",
+                {"catagory_name": catagory_name},
+            )
+            amounts = self.db_cursor.fetchall()
+            catagory_amount = 0
+            for amount in amounts:
+                catagory_amount = +int(amount[0])
+            catagory_info.append(
+                {"name": catagory_name, "amount": catagory_amount / 100}
+            )
+        return catagory_info
+
     def add_transaction(self, amount, date, account_from, payee, catagory):
         """
         Adds a transaction record to database
@@ -129,7 +187,7 @@ class Transactions(Database):
             """INSERT INTO transactions (amount, date, account_from, payee, catagory)
             VALUES (:amount, :date, :account_from, :payee, :catagory);""",
             {
-                "amount": amount * 100,
+                "amount": int(float(amount) * 100),
                 "date": date,
                 "account_from": account_from,
                 "payee": payee,
@@ -138,15 +196,40 @@ class Transactions(Database):
         )
         self.db_connection.commit()
 
+    def delete_transaction(self, record_id):
+        self.db_cursor.execute(
+            "DELETE FROM transactions WHERE id = :id;", {"id": record_id}
+        )
+
+    def edit_transaction(self, record_id, edit_names, edits):
+        for name, edit in zip(edit_names, edits):
+            self.db_cursor.execute(
+                "UPDATE transactions SET :edit_name = :edit WHERE id = :id;",
+                {"edit_name": name, "edit": edit, "id": record_id},
+            )
+
     def get_records(self):
         """
         Retrieves a records from database
         """
         self.db_cursor.execute("""SELECT * FROM transactions;""")
-        return self.db_cursor.fetchall()
+        raw_records = self.db_cursor.fetchall()
+        records = []
+        for record in raw_records:
+            records.append(
+                {
+                    "id": record[0],
+                    "amount": record[1] / 100,
+                    "date": record[2],
+                    "account": record[3],
+                    "payee": record[4],
+                    "catagory": record[5],
+                }
+            )
+        return records
 
 
-def main():
+def cli():
     """
     Current main function works in a commandline capacity to test functionality
     Aim to produce a flask app once logic is in place
@@ -185,6 +268,11 @@ def main():
         # spending overview
         elif raw_input == "q":
             break
+
+
+def main():
+    t = Transactions()
+    t.export()
 
 
 if __name__ == "__main__":
